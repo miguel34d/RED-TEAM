@@ -148,6 +148,9 @@ Con el ataque nuevamente en curso, se verifica el estado del `Switch1`:
 `Ethernet0/0` ya no procesa ni responde a los anuncios CDP del atacante: `show cdp neighbors` vuelve a mostrar 0 entradas, la CPU regresa a 0%, la memoria vuelve a sus niveles normales y `show cdp traffic` no registra nuevos paquetes de entrada aunque el script de ataque siga corriendo en el Kali.
 
 ---
+LINK DEL VIDEO
+https://www.youtube.com/watch?v=p8nBV-QHDwI
+
 
 ## 7. Conclusión
 
