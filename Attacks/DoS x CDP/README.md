@@ -68,6 +68,7 @@ Se toma una línea base de vecinos CDP, uso de CPU y memoria del switch antes de
 ```bash
 sudo python3 dos-cdp.py
 ```
+https://github.com/miguel34d/RED-TEAM/blob/main/Attacks/DoS%20x%20CDP/dos-cdp.py
 
 Se selecciona la interfaz `eth0` y número de paquetes `0` (infinito), iniciando la inundación de la tabla CDP del switch:
 
