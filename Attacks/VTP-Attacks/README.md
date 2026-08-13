@@ -121,24 +121,7 @@ Inicio
 ## 🌐 Documentación de la Red
 
 ### 🖥️ Topología en GNS3
-
-```
-        ┌──────────────────┐
-        │   VTP SERVER     │
-        │     IOU1         │
-        │   (Switch Cisco) │
-        └────────┬─────────┘
-                 │ e0/0  (Trunk 802.1q)
-                 │
-                 │ e0
-        ┌────────┴─────────┐          ┌──────────┐
-        │   Kali Linux-1   ├── e1 ────┤  Cloud1  │
-        │    (Atacante)    │  tap0     │ (Internet│
-        └──────────────────┘          └──────────┘
-
-  VLANs creadas: VLAN 10 | VLAN 20
-  Matrícula: 2025-1367  │  Miguel Ramirez Meli
-```
+<img width="991" height="511" alt="image" src="https://github.com/user-attachments/assets/e17b61c2-52cf-4816-a8c1-8dfdf16bbf9b" />
 
 ### 📡 Dispositivos y Conexiones
 
@@ -177,12 +160,6 @@ IOU1(config-if)# switchport mode trunk
 
 ---
 
-## 📸 Capturas de Pantalla
-
-### 01 — Topología en GNS3
-<img width="871" height="489" alt="Topología GNS3" src="https://github.com/user-attachments/assets/c4bbbd6e-5eaf-421f-a36a-baf56bdb65a4" /> 
-
----
 
 ### 02 — VLANs en el servidor VTP antes del ataque
 <img width="888" height="422" alt="image" src="https://github.com/user-attachments/assets/788586ee-b889-423f-b39b-2f3edc125f87" />
