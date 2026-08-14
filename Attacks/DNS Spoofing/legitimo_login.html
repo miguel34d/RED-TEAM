@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITLA - Login Legítimo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #0b1a2e, #1a3a4a, #0f2b3b);
+            background-size: 300% 300%;
+            animation: gradientBG 12s ease infinite;
+            padding: 20px;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .login-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 40px 45px;
+            max-width: 480px;
+            width: 100%;
+            border: 2px solid rgba(0, 255, 150, 0.25);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: floatCard 4s ease-in-out infinite;
+        }
+        @keyframes floatCard {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+        }
+        .login-container:hover {
+            transform: scale(1.01) translateY(-5px);
+            box-shadow: 0 30px 70px rgba(0, 255, 150, 0.15);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .logo {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 150, 0.3));
+            animation: logoGlow 2.5s ease-in-out infinite alternate;
+        }
+        @keyframes logoGlow {
+            0% { filter: drop-shadow(0 0 5px rgba(0, 255, 150, 0.2)); }
+            100% { filter: drop-shadow(0 0 25px rgba(0, 255, 150, 0.7)); }
+        }
+        .badge {
+            display: inline-block;
+            background: #00d48a;
+            color: #0b1a2e;
+            padding: 8px 22px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            box-shadow: 0 0 25px rgba(0, 212, 138, 0.5);
+            animation: badgePulse 2s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+        @keyframes badgePulse {
+            0% { box-shadow: 0 0 5px rgba(0, 212, 138, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(0, 212, 138, 0.8); }
+            100% { box-shadow: 0 0 5px rgba(0, 212, 138, 0.3); }
+        }
+        .badge i { margin-right: 8px; }
+        .url-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            color: #aaffdd;
+            border: 1px solid rgba(0, 255, 150, 0.2);
+            margin-bottom: 25px;
+            word-break: break-all;
+            text-align: center;
+        }
+        .url-display i { color: #00d48a; margin-right: 8px; }
+        .url-display span { color: #fff; font-weight: 600; }
+        .url-display .highlight { color: #00ffaa; }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #00d48a;
+            box-shadow: 0 0 20px rgba(0, 212, 138, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .btn-acceder {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #00d48a, #00a86b);
+            border: none;
+            border-radius: 16px;
+            color: #0b1a2e;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 212, 138, 0.3);
+            margin-top: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        .btn-acceder:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 212, 138, 0.5);
+        }
+        .btn-acceder:active { transform: scale(0.97); }
+        .extra-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 18px 0 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .extra-links a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .extra-links a:hover { color: #00d48a; }
+        .extra-links label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+        .office-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .office-btn:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: #00d48a;
+        }
+        .office-btn i { color: #00d48a; font-size: 1.2rem; }
+        .idioma {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .idioma select {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 6px 14px;
+            color: rgba(255, 255, 255, 0.7);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+        }
+        .idioma select option { background: #1a2a3a; }
+        .server-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            border-left: 4px solid #00d48a;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+        .server-info strong { color: #aaffdd; }
+        .server-info i { color: #00d48a; margin-right: 6px; }
+        .footer {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="header">
+            <img src="https://www.itla.edu.do/themes/custom/itla/logo.png" alt="ITLA" class="logo" onerror="this.src='https://via.placeholder.com/100?text=ITLA'">
+            <div class="badge"><i class="fas fa-shield-alt"></i> SERVIDOR LEGÍTIMO — DOMINIO REAL</div>
+            <div class="url-display">
+                <i class="fas fa-link"></i>
+                <span>https://itla.edu.do/</span><span class="highlight">miguel-ramirez-meli-20251367</span>
+            </div>
+        </div>
+        <form>
+            <div class="form-group">
+                <label><i class="fas fa-user-graduate"></i> Matrícula / Usuario</label>
+                <input type="text" value="20251367" placeholder="Ingresa tu matrícula">
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-lock"></i> Contraseña</label>
+                <input type="password" placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-acceder"><i class="fas fa-sign-in-alt"></i> Acceder</button>
+            <div class="extra-links">
+                <a href="#"><i class="far fa-question-circle"></i> ¿Olvidó su contraseña?</a>
+                <label><input type="checkbox"> Recordarme</label>
+            </div>
+            <button type="button" class="office-btn"><i class="fab fa-microsoft"></i> Iniciar sesión con Office 365</button>
+        </form>
+        <div class="idioma">
+            <select>
+                <option>Español (Internacional)</option>
+                <option>English</option>
+                <option>Français</option>
+            </select>
+        </div>
+        <div class="server-info">
+            <i class="fas fa-server"></i> <strong>Servidor</strong> 10.13.67.30 – Web Server legítimo<br>
+            <i class="fas fa-id-card"></i> <strong>Matrícula:</strong> 2025-1367 - TSI-203 - Prof. Jonathan Rondon
+        </div>
+        <div class="footer">
+            <i class="fas fa-lock" style="color:#00d48a;"></i> Conexión segura · Verificado por ITLA
+        </div>
+    </div>
+</body>
+</html>
