@@ -162,11 +162,14 @@ sudo setoolkit
 ```
 
 Dentro del laboratorio se puede utilizar la estructura de:
-
+2. Iniciar SET
 ```text
-1 → Social-Engineering Attacks
-2 → Website Attack Vectors
-3 → Credential Harvester Attack Method
+
+sudo setoolkit
+Menú: 1 → 2 → 3 → 3
+IP: 0.0.0.0
+Ruta: /home/miguel1367/whatsapp_phishing/
+URL: https://web.whatsapp.com
 ```
 
 > ⚠️ Para una práctica segura, la demostración debe utilizar exclusivamente información ficticia y participantes que hayan autorizado expresamente la prueba.
