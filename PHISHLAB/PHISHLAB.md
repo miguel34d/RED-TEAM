@@ -1,10 +1,14 @@
 <!-- BADGES DEL AUTOR -->
 <div align="center">
-  <img src="https://img.shields.io/badge/Autor-Miguel%20Ramirez%20Meli-181717?style=flat-square&logo=github&logoColor=white" />
-  <img src="https://img.shields.io/badge/Matrícula-20251367-blue?style=flat-square&logo=id-card&logoColor=white" />
-  <img src="https://img.shields.io/badge/Fecha-Agosto%202026-purple?style=flat-square&logo=calendar&logoColor=white" />
+  <img src="https://img.shields.io/badge/Estudiante-Miguel%20Ramirez%20Meli-blue?style=flat-square&logo=github&logoColor=white" />
+  <img src="https://img.shields.io/badge/Matrícula-2025--1367-blue?style=flat-square&logo=id-card&logoColor=white" />
+  <img src="https://img.shields.io/badge/Materia-Hacker%20%C3%89tico%201-orange?style=flat-square&logo=book&logoColor=white" />
+  <img src="https://img.shields.io/badge/Profesor-Nelson%20Mieses-orange?style=flat-square&logo=chalkboard-teacher&logoColor=white" />
+  <img src="https://img.shields.io/badge/Institución-ITLA-grey?style=flat-square&logo=school&logoColor=white" />
+  <br>
+  <img src="https://img.shields.io/badge/Estado-Resuelto-brightgreen?style=flat-square&logo=check&logoColor=white" />
+  <img src="https://img.shields.io/badge/Ataque-DHCP%20Spoofing-orange?style=flat-square&logo=shield&logoColor=white" />
 </div>
-
 <br>
 
 # 📧 Guía Completa: Creación y Envío de Correo de Phishing (Simulación)
