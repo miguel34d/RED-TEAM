@@ -157,4 +157,5 @@ run
 
 ## Mitigación
 
-*(pendiente)*
+*(ACTUALIZAR EL ADOBE)*
+https://chat.deepseek.com/a/chat/s/fdcaa16f-26c6-4b5a-9daf-eef8c0f5148d
