@@ -166,6 +166,24 @@ La interfaz cae a una dirección **APIPA (169.254.x.x)**, sin gateway — la ví
 **Configuración aplicada en Switch1:**
 
 ```
+
+ip dhcp snooping
+ip dhcp snooping vlan 10
+no ip dhcp snooping information option
+
+interface Ethernet0/0
+ duplex full
+ ip dhcp snooping trust
+
+interface Ethernet0/1
+ ip dhcp snooping limit rate 10
+
+interface Ethernet0/2
+ ip dhcp snooping limit rate 10
+```
+**Configuración aplicada en Switch1 Version completa contra mac foouding:**
+```
+
 enable
 configure terminal
 
@@ -173,10 +191,10 @@ ip dhcp snooping
 ip dhcp snooping vlan 10
 no ip dhcp snooping information option
 
-interface e0/2
+interface e0/0
  ip dhcp snooping trust
 
-interface e0/0
+interface e0/2
  ip dhcp snooping limit rate 5
  switchport port-security
  switchport port-security maximum 1
