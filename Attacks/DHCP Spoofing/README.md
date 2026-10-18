@@ -146,8 +146,26 @@ El script ganó la carrera contra Router1: capturó el `DHCPDISCOVER` de la víc
 ---
 
 ## 5. Mitigación
-
 **Configuración aplicada en Switch1:**
+
+
+```
+ip dhcp snooping
+ip dhcp snooping vlan 10
+no ip dhcp snooping information option
+
+interface Ethernet0/0
+ duplex full
+ ip dhcp snooping trust
+
+interface Ethernet0/1
+ ip dhcp snooping limit rate 5
+
+interface Ethernet0/2
+ ip dhcp snooping limit rate 5
+
+```
+**Configuración aplicada en Switch1 EXTRASS OPCIONAL:**
 
 ```
 enable
