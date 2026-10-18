@@ -176,10 +176,15 @@ interface Ethernet0/0
  ip dhcp snooping trust
 
 interface Ethernet0/1
- ip dhcp snooping limit rate 10
+ ip dhcp snooping limit rate 5
 
 interface Ethernet0/2
- ip dhcp snooping limit rate 10
+ ip dhcp snooping limit rate 5
+
+errdisable recovery cause dhcp-rate-limit
+errdisable recovery interval 300
+
+
 ```
 **Configuración aplicada en Switch1 Version completa contra mac foouding:**
 ```
