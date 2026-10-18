@@ -41,6 +41,7 @@ interface e0/0
  no switchport port-security
  spanning-tree portfast
  no shutdown
+exit
 
 interface e0/1
  switchport mode access
@@ -48,6 +49,7 @@ interface e0/1
  no switchport port-security
  spanning-tree portfast
  no shutdown
+exit
 
 interface e0/2
  switchport mode access
@@ -55,6 +57,7 @@ interface e0/2
  no switchport port-security
  spanning-tree portfast
  no shutdown
+exit
 
 no ip dhcp snooping
 
