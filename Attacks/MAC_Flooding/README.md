@@ -127,17 +127,28 @@ Al filtrar tráfico ICMP en Kali mientras la víctima hacía ping al **switch** 
 enable
 configure terminal
 
-interface e0/0
+interface Ethernet0/0
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast edge
  switchport port-security
- switchport port-security maximum 1
- switchport port-security violation restrict
- switchport port-security mac-address sticky
+ switchport port-security maximum 2
+ switchport port-security violation shutdown
+ switchport port-security aging time 10
+ switchport port-security aging type inactivity
 
-interface e0/1
+interface Ethernet0/1
+ switchport mode access
+ switchport access vlan 10
+ spanning-tree portfast edge
  switchport port-security
- switchport port-security maximum 1
- switchport port-security violation restrict
- switchport port-security mac-address sticky
+ switchport port-security maximum 2
+ switchport port-security violation shutdown
+ switchport port-security aging time 10
+ switchport port-security aging type inactivity
+
+errdisable recovery cause psecure-violation
+errdisable recovery interval 300
 
 end
 write memory
